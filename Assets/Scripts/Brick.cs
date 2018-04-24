@@ -1,0 +1,104 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
+
+public class Brick : MonoBehaviour {
+
+    public int hitPoints = 1;
+    public Sprite [] hitSprite;
+    public static int numberOfBricksInScene = 0;
+    public AudioClip collisionSFX;
+    public GameObject debris;
+
+    private LevelManager levelManager;
+    private bool isBreakable;
+    public bool ultra = false;
+
+    void Start()
+    {
+        isBreakable = (this.tag == "Breakable");
+        levelManager = FindObjectOfType<LevelManager>();
+        if (isBreakable)
+        {
+            numberOfBricksInScene++;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isBreakable)
+        {
+            if (ultra && gameObject.tag == "Ball")
+            {
+                if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
+                {
+                    AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                    HandleHits();
+                    collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                }
+            } else
+            {
+                AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                HandleHits();
+                collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+            }
+        }
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isBreakable)
+        {
+            if (ultra && gameObject.tag == "Ball")
+            {
+                if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
+                {
+                    AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                    HandleHits();
+                    collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                }
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                HandleHits();
+                collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+            }
+        }
+    }
+
+    void HandleHits()
+    {       
+        hitPoints -= 1;
+        if (hitPoints <= 0)
+        {
+            numberOfBricksInScene--;
+            levelManager.BrickDestroyed();
+            GameObject instantiatedDebris = Instantiate(debris,transform.position, Quaternion.identity);
+            var ps = instantiatedDebris.GetComponent<ParticleSystem>();
+            ps.startColor = GetComponent<SpriteRenderer>().color;
+            Destroy(gameObject);            
+        }
+        else
+        {
+            LoadSprite();
+        }
+    }
+
+    private void LoadSprite()
+    {  
+        int maxHP = hitSprite.Length + 1;
+        int spriteIndex = maxHP - hitPoints - 1;
+        if (hitSprite[spriteIndex] == null)
+        {
+            Debug.LogError("No sprite found");
+        }else
+        {
+            this.GetComponent<SpriteRenderer>().sprite = hitSprite[spriteIndex];
+        }
+    }
+
+}
