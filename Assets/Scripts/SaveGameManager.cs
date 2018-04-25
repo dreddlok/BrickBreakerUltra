@@ -19,7 +19,7 @@ public static class SaveGameManager {
 
     }
 
-    public static bool[] LoadPlayer(out float volume, out bool screenShake)
+    public static bool[] LoadPlayer(out float volume, out float sfx, out bool screenShake)
     {
         if (File.Exists(Application.persistentDataPath + "/Save.sav"))
         {
@@ -29,12 +29,14 @@ public static class SaveGameManager {
             PlayerData data = binaryFormatter.Deserialize(stream) as PlayerData;
             stream.Close();
             volume = data.volume;
+            sfx = data.sfx;
             screenShake = data.screenShake;
             return data.levelsUnlocked;
         } else
         {
             Debug.Log("File does not exist");
             volume = 1;
+            sfx = 1;
             screenShake = true;
             return new bool[9];
         }
@@ -47,12 +49,14 @@ public static class SaveGameManager {
     {
         public bool[] levelsUnlocked;
         public float volume;
+        public float sfx;
         public bool screenShake;
 
         public PlayerData(PlayerSave playerSave )
         {
             levelsUnlocked = playerSave.level;
             volume = playerSave.volume;
+            sfx = playerSave.sfx;
             screenShake = playerSave.screenShake;
         }
     }

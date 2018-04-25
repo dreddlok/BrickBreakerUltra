@@ -10,14 +10,14 @@ public class LastBlock : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        /*if (Brick.numberOfBricksInScene < 2)
+        //if (Brick.numberOfBricksInScene < 2)
         //{        
         Debug.Log(Brick.numberOfBricksInScene);
             originalCameraPosition = Camera.main.transform.position;
             Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
             Camera.main.orthographicSize = zoom;
             SlowTime();
-        }*/
+        //}
     }
 
     private void OnTriggerExit2D(Collider2D collision)

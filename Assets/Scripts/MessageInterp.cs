@@ -16,7 +16,9 @@ public class MessageInterp : MonoBehaviour {
     void Start () {
         transform.position = new Vector3(transform.position.x * 2,transform.position.y);
         currentCountdown = countDown;
-	}
+        MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
+        musicPlayer.ChangeTrack(musicPlayer.level, true);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -47,7 +49,7 @@ public class MessageInterp : MonoBehaviour {
 
         currentCountdown -= Time.deltaTime * speed;
         if (currentCountdown <= 0 && easingIn == false)
-        {
+        {            
             Destroy(transform.parent.gameObject);
         }
 

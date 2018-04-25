@@ -53,6 +53,9 @@ public class Paddle : MonoBehaviour {
         expandPaddleR = transform.Find("Paddle Wing L");
         Vector3 targetPositionL = new Vector3(expandPaddleL.transform.localPosition.x, expandPaddleL.transform.localPosition.y, expandPaddleL.transform.localPosition.z);
         Vector3 targetPositionR = new Vector3(expandPaddleR.transform.localPosition.x, expandPaddleL.transform.localPosition.y, expandPaddleL.transform.localPosition.z);
+
+        MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
+        musicPlayer.ChangeTrack(musicPlayer.level, true);
     }
 
     // Update is called once per frame

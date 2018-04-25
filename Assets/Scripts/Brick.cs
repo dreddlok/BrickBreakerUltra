@@ -28,19 +28,20 @@ public class Brick : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         if (isBreakable)
         {
-            if (ultra && gameObject.tag == "Ball")
+            if (ultra)
             {
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
                 {
-                    AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
                 }
             } else
             {
-                AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
             }
@@ -50,20 +51,21 @@ public class Brick : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         if (isBreakable)
         {
-            if (ultra && gameObject.tag == "Ball")
+            if (ultra)
             {
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
                 {
-                    AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
                 }
             }
             else
             {
-                AudioSource.PlayClipAtPoint(collisionSFX, transform.position);
+                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
             }
@@ -99,6 +101,11 @@ public class Brick : MonoBehaviour {
         {
             this.GetComponent<SpriteRenderer>().sprite = hitSprite[spriteIndex];
         }
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("Brick Clicked");
     }
 
 }

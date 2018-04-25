@@ -14,7 +14,8 @@ public class LevelButton : MonoBehaviour {
 
     private void Awake()
     {
-        delay = level * .1f;
+        delay = (level * .1f) +.3f;
+        Cursor.visible = true;
     }
 
     private void AddJuice()

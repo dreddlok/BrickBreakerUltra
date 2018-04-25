@@ -8,8 +8,11 @@ public class pip : MonoBehaviour {
     public float pipValue; // determines where in the order of pips it lies and the number needed to "activate"
     public Sprite activeSprite;
     public Sprite inactiveSprite;
+    public AudioClip audioClip;
 
     private Button button;
+    public enum sliderType { volume, sfx};
+    public sliderType target;
     private PlayerSave playerSave;
 
     private void Start()
@@ -20,14 +23,28 @@ public class pip : MonoBehaviour {
 
     private void OnGUI()
     {
-        if (FindObjectOfType<PlayerSave>().volume >= pipValue)
+        if (target == sliderType.volume)
         {
-            button.image.sprite = activeSprite;
-        }
-        else
+            if (FindObjectOfType<PlayerSave>().volume >= pipValue)
+            {
+                button.image.sprite = activeSprite;
+            }
+            else
+            {
+                button.image.sprite = inactiveSprite;
+            }
+        } else
         {
-            button.image.sprite = inactiveSprite;
+            if (FindObjectOfType<PlayerSave>().sfx >= pipValue)
+            {
+                button.image.sprite = activeSprite;
+            }
+            else
+            {
+                button.image.sprite = inactiveSprite;
+            }
         }
+
     }
 
     public void SetVolumeToSelf()
@@ -35,4 +52,10 @@ public class pip : MonoBehaviour {
         FindObjectOfType<PlayerSave>().volume = pipValue;
     }
 
+    public void SetSFXToSelf()
+    {
+        FindObjectOfType<PlayerSave>().sfx = pipValue;
+        AudioSource.PlayClipAtPoint(audioClip, Vector3.zero, pipValue);
+        Debug.Log("play sound " + audioClip.ToString() + " at: " + Vector3.zero.ToString() + "at a volume of " + playerSave.sfx.ToString());
+    }
 }

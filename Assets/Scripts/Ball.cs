@@ -13,9 +13,11 @@ public class Ball : MonoBehaviour {
     public bool bSlingShotted = false;
     public float slowMotionSpeed = 0.2f;    
     public AudioClip bounceSFX;
+    public AudioClip laucnhSFX;
     public bool boosted = false;
     public float slowFactor = .8f;
     public bool slowed = false;
+    public GameObject debris;
 
     [Header("Combo Variables")]
     public float comboLinkDuration = 1;
@@ -100,11 +102,12 @@ public class Ball : MonoBehaviour {
 
     private void LaunchBall()
     {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         GetComponent<TrailRenderer>().enabled = true;
         rigidbody2D.velocity = CalculateLaunchVector(launchAngle) * launchPower;
         launchArrow.GetComponent<Renderer>().enabled = false;
-        paddle.GetComponent<AudioSource>().Play();
+        AudioSource.PlayClipAtPoint(laucnhSFX, Vector3.zero, playerSave.sfx);
         bHasStarted = true;
     }
 
@@ -153,16 +156,15 @@ public class Ball : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
 
-        
         Vector2 tweak = new Vector2(Random.Range(0f,0.2f), Random.Range(0f, 0.2f));
         if (bHasStarted)
         {
             AudioSource audioSource = GetComponent<AudioSource>();
             if (collision.gameObject.tag == "Breakable")
             {
-
-                AudioSource.PlayClipAtPoint(comboSFX[comboStage], transform.position);
+                AudioSource.PlayClipAtPoint(comboSFX[comboStage], Vector3.zero, playerSave.sfx);
                 comboCountDown = comboLinkDuration;
                 if (comboStage < maxComboStage)
                 {                   
@@ -171,8 +173,9 @@ public class Ball : MonoBehaviour {
             }
             else
             {
-                AudioSource.PlayClipAtPoint(bounceSFX, transform.position);
+                AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, playerSave.sfx);
                 bSlingShotted = false;
+                Instantiate(debris, transform.position, Quaternion.identity);
             }
             
             GetComponent<Rigidbody2D>().velocity += tweak;

@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject levelComplete;
     public Scene currentScene;
     public bool bDebugMode = false;
+    public AudioClip gameStartSFX;
 
     private void Start()
     {
@@ -84,6 +85,11 @@ public class LevelManager : MonoBehaviour {
             FindObjectOfType<Ball>().Pause();
             Instantiate(levelComplete);
         }
+        if (Brick.numberOfBricksInScene == 1)
+        {
+            Debug.Log("1 brick left in Scene");
+            FindObjectOfType<Brick>().transform.Find("LastHitTrigger").GetComponent<BoxCollider2D>().enabled = true;
+        }
     }
 
     //wrapper for startgame function as it must be a ienumerator but these cannnot be accesed directly by buttons
@@ -95,7 +101,8 @@ public class LevelManager : MonoBehaviour {
     //Used when moving from the Title Screen to the main game
     public IEnumerator StartGame(string LeveltoLoad)
     {
-        GetComponent<AudioSource>().Play();
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+        AudioSource.PlayClipAtPoint(gameStartSFX, Vector3.zero, playerSave.sfx);
         float fadeTime = GetComponent<Fading>().BeginFade(1); // we are storing the time it will take to fully fade out
         yield return new WaitForSeconds(fadeTime);
         LoadLevel(LeveltoLoad);

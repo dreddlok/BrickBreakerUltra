@@ -6,6 +6,7 @@ public class PlayerSave : MonoBehaviour {
 
     public bool[] level;
     public float volume;
+    public float sfx;
     public bool screenShake;
     public static PlayerSave instance = null;
 
@@ -52,13 +53,19 @@ public class PlayerSave : MonoBehaviour {
     public void Load()
     {
         
-        level = SaveGameManager.LoadPlayer(out volume, out screenShake);
+        level = SaveGameManager.LoadPlayer(out volume, out sfx, out screenShake);
     }
 
     public void ChangeVolume(float amount)
     {
         volume += amount;
         volume = Mathf.Clamp(volume, 0, 1);
+    }
+
+    public void ChangeSFX(float amount)
+    {
+        sfx += amount;
+        sfx = Mathf.Clamp(sfx, 0, 1);
     }
 
     public void ClearSave()
@@ -68,6 +75,7 @@ public class PlayerSave : MonoBehaviour {
             level[i] = false;
         }
         volume = 1;
+        sfx = 1;
         screenShake = true;
         Save();
         Debug.Log("save cleared");

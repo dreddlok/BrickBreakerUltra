@@ -48,12 +48,13 @@ public class MultiBall : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         Vector2 tweak = new Vector2(Random.Range(0f, 0.2f), Random.Range(0f, 0.2f));
             AudioSource audioSource = GetComponent<AudioSource>();
             if (collision.gameObject.tag == "Breakable")
             {
 
-                AudioSource.PlayClipAtPoint(comboSFX[comboStage], transform.position);
+                AudioSource.PlayClipAtPoint(comboSFX[comboStage], Vector3.zero, playerSave.sfx);
                 comboCountDown = comboLinkDuration;
                 if (comboStage < maxComboStage)
                 {
@@ -62,7 +63,7 @@ public class MultiBall : MonoBehaviour {
             }
             else
             {
-                AudioSource.PlayClipAtPoint(bounceSFX, transform.position);
+                AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, playerSave.sfx);
             }
 
             GetComponent<Rigidbody2D>().velocity += tweak;

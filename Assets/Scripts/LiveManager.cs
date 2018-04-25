@@ -45,6 +45,8 @@ public class LiveManager : MonoBehaviour {
         else
         {
             Instantiate(levelFailed);
+            MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
+            musicPlayer.ChangeTrack(musicPlayer.levelFailed, false);
         }
     }
 
