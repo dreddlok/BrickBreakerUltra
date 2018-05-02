@@ -38,6 +38,11 @@ sysinfo.txt
 *.ai
 *.psd
 
+# Music Files
+*.ogg
+*.wav
+*.mp3
+
 # Libraries, Middleware and Examples
 *Assets/EffectExamples
 *Assets/Plugins

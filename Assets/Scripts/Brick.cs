@@ -11,10 +11,12 @@ public class Brick : MonoBehaviour {
     public static int numberOfBricksInScene = 0;
     public AudioClip collisionSFX;
     public GameObject debris;
+    public GameObject shockwave;
 
     private LevelManager levelManager;
     private bool isBreakable;
     public bool ultra = false;
+    private BrickFlash brickFlash;
 
     void Start()
     {
@@ -24,6 +26,7 @@ public class Brick : MonoBehaviour {
         {
             numberOfBricksInScene++;
         }
+        brickFlash = transform.Find("brick flash").GetComponent<BrickFlash>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,8 +34,10 @@ public class Brick : MonoBehaviour {
         PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         if (isBreakable)
         {
+            Instantiate(shockwave, transform.position, Quaternion.identity);
+            brickFlash.FlashSprite();
             if (ultra)
-            {
+            {                
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
                 {
                     AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
@@ -54,6 +59,8 @@ public class Brick : MonoBehaviour {
         PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         if (isBreakable)
         {
+            Instantiate(shockwave, transform.position, Quaternion.identity);
+            brickFlash.FlashSprite();
             if (ultra)
             {
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
