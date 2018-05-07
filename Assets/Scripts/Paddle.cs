@@ -12,6 +12,8 @@ public class Paddle : MonoBehaviour {
     public Sprite GemOn;
     public Sprite GemOff;
     public AudioClip engineRoar;
+    public GameObject gemActivatedPS;
+    public AudioClip gemActivatedSFX;
 
     [Header("Power Ups")]
     [HideInInspector]
@@ -42,6 +44,8 @@ public class Paddle : MonoBehaviour {
     public Vector3 targetPositionR;
     private Transform expandPaddleL;
     private Transform expandPaddleR;
+    private float sfxVol = 1;
+    private TrailRenderer trailRenderer;
 
     private float mousePosInBlocks;
     private Ball ball;
@@ -55,7 +59,21 @@ public class Paddle : MonoBehaviour {
         Vector3 targetPositionR = new Vector3(expandPaddleR.transform.localPosition.x, expandPaddleL.transform.localPosition.y, expandPaddleL.transform.localPosition.z);
 
         MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
-        musicPlayer.ChangeTrack(musicPlayer.level, true);
+        if (musicPlayer != null)
+        {
+            musicPlayer.ChangeTrack(musicPlayer.level, true);
+        }
+
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+        if (playerSave != null)
+        {
+            sfxVol = playerSave.sfx;
+        }
+
+        trailRenderer = GetComponent<TrailRenderer>();
+        trailRenderer.sortingLayerName = "gem trail";
+
+        ActivateSlingshot();
     }
 
     // Update is called once per frame
@@ -111,13 +129,20 @@ public class Paddle : MonoBehaviour {
 
     private void ActivateSlingshot()
     {
-        slingshotAvailable = true;
-        GetComponent<SpriteRenderer>().sprite = GemOn;
-        transform.Find("SmallPaddle").GetComponent<SpriteRenderer>().sprite = GemOn;
+        if (slingshotAvailable == false)
+        {
+            trailRenderer.enabled = true;
+            slingshotAvailable = true;
+            GetComponent<SpriteRenderer>().sprite = GemOn;
+            transform.Find("SmallPaddle").GetComponent<SpriteRenderer>().sprite = GemOn;
+            AudioSource.PlayClipAtPoint(gemActivatedSFX, Vector3.zero, sfxVol);
+            Instantiate(gemActivatedPS, transform);
+        }
     }
 
     public void DeactivateSlingshot()
     {
+        trailRenderer.enabled = false;
         slingshotAvailable = false;
         GetComponent<SpriteRenderer>().sprite = GemOff;
         transform.Find("SmallPaddle").GetComponent<SpriteRenderer>().sprite = GemOff;

@@ -79,7 +79,10 @@ public class LevelManager : MonoBehaviour {
             int currentLevel = SceneManager.GetActiveScene().buildIndex -2; // -2 because of the start and level select scenes being first in the build order
             if (currentLevel < 8)
             {
-                playerSave.level[currentLevel + 1] = true;                     // unlocks next level
+                if (playerSave !=null)
+                {
+                    playerSave.level[currentLevel + 1] = true;                     // unlocks next level
+                }
             }
             playerSave.Save();
             FindObjectOfType<Ball>().Pause();

@@ -33,6 +33,8 @@ public class Ball : MonoBehaviour {
     private Vector2 storedVelocity;
     private Vector3 slingShotVector;
     private Vector3 initialCursorPosition;
+    private float sfxVolume;
+    private PlayerSave playerSave;
 
     // Use this for initialization
     void Start () {
@@ -41,10 +43,18 @@ public class Ball : MonoBehaviour {
         launchArrow.GetComponent<Renderer>().enabled = true;
         launchArrow.ball = this;
         this.transform.position = paddle.transform.position;
+        playerSave = FindObjectOfType<PlayerSave>();
+        if (playerSave == null)
+        {
+            sfxVolume = 1;
+        } else
+        {
+            sfxVolume = playerSave.sfx;
+        }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         if (!bIsPaused)
         {
             RotateLaunchAngleBackAndForth();
@@ -101,13 +111,12 @@ public class Ball : MonoBehaviour {
     }
 
     private void LaunchBall()
-    {
-        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+    {        
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         GetComponent<TrailRenderer>().enabled = true;
         rigidbody2D.velocity = CalculateLaunchVector(launchAngle) * launchPower;
         launchArrow.GetComponent<Renderer>().enabled = false;
-        AudioSource.PlayClipAtPoint(laucnhSFX, Vector3.zero, playerSave.sfx);
+        AudioSource.PlayClipAtPoint(laucnhSFX, Vector3.zero, sfxVolume);
         bHasStarted = true;
     }
 
@@ -164,16 +173,21 @@ public class Ball : MonoBehaviour {
             AudioSource audioSource = GetComponent<AudioSource>();
             if (collision.gameObject.tag == "Breakable")
             {
-                AudioSource.PlayClipAtPoint(comboSFX[comboStage], Vector3.zero, playerSave.sfx);
+                AudioSource.PlayClipAtPoint(comboSFX[comboStage], Vector3.zero, sfxVolume);
                 comboCountDown = comboLinkDuration;
                 if (comboStage < maxComboStage)
                 {                   
                     comboStage++;
                 }
             }
+            else if (collision.gameObject.tag == "Paddle")
+            {
+                AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, sfxVolume);
+                bSlingShotted = false;
+            }
             else
             {
-                AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, playerSave.sfx);
+                AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, sfxVolume);
                 bSlingShotted = false;
                 Instantiate(debris, transform.position, Quaternion.identity);
             }

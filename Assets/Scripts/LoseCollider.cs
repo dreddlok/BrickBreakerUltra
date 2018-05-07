@@ -5,12 +5,23 @@ using UnityEngine;
 public class LoseCollider : MonoBehaviour {
     public AudioClip audioClip;
 
+    private float sfxVol = 1;
+    private PlayerSave playerSave;
+
+    private void Start()
+    {
+        playerSave = FindObjectOfType<PlayerSave>();
+        if (playerSave != null)
+        {
+            sfxVol = playerSave.sfx;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.tag == "Ball")
         {
-            PlayerSave playerSave = FindObjectOfType<PlayerSave>();
-            AudioSource.PlayClipAtPoint(audioClip, Vector3.zero, playerSave.sfx);
+            AudioSource.PlayClipAtPoint(audioClip, Vector3.zero, sfxVol);
             FindObjectOfType<LiveManager>().SubtractLife(1);
             Destroy(collider.gameObject);
             FindObjectOfType<Camera>().GetComponent<CameraShake>().shaking = true;

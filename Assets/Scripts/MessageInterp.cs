@@ -17,7 +17,10 @@ public class MessageInterp : MonoBehaviour {
         transform.position = new Vector3(transform.position.x * 2,transform.position.y);
         currentCountdown = countDown;
         MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
-        musicPlayer.ChangeTrack(musicPlayer.level, true);
+        if (musicPlayer != null)
+        {
+            musicPlayer.ChangeTrack(musicPlayer.level, true);
+        }
     }
 	
 	// Update is called once per frame

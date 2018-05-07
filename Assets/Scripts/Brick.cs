@@ -17,6 +17,8 @@ public class Brick : MonoBehaviour {
     private bool isBreakable;
     public bool ultra = false;
     private BrickFlash brickFlash;
+    private PlayerSave playerSave;
+    private float sfxVol = 1;
 
     void Start()
     {
@@ -26,12 +28,19 @@ public class Brick : MonoBehaviour {
         {
             numberOfBricksInScene++;
         }
-        brickFlash = transform.Find("brick flash").GetComponent<BrickFlash>();
+        if (isBreakable)
+        {
+            brickFlash = transform.Find("brick flash").GetComponent<BrickFlash>();
+            PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+        }
+        if (playerSave != null)
+        {
+            sfxVol = playerSave.sfx;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
-        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+    {        
         if (isBreakable)
         {
             Instantiate(shockwave, transform.position, Quaternion.identity);
@@ -40,13 +49,13 @@ public class Brick : MonoBehaviour {
             {                
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
                 {
-                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
+                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
                 }
             } else
             {
-                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
+                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
             }
@@ -56,7 +65,6 @@ public class Brick : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
         if (isBreakable)
         {
             Instantiate(shockwave, transform.position, Quaternion.identity);
@@ -65,14 +73,14 @@ public class Brick : MonoBehaviour {
             {
                 if (collision.gameObject.GetComponent<Ball>().bSlingShotted)
                 {
-                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
+                    AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
                 }
             }
             else
             {
-                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, playerSave.sfx);
+                AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
             }

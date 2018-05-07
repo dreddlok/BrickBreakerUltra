@@ -22,19 +22,39 @@ public class CameraShake : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (shaking && playerSave.screenShake)
+        if (playerSave != null)
         {
-            if (currentDuration > 0)
+            if (shaking && playerSave.screenShake)
             {
-                Vector3 shakePos = startPos + Random.insideUnitSphere * shakeStrength;
-                cameraTransform.localPosition = new Vector3 (shakePos.x,shakePos.y,cameraTransform.localPosition.z);
-                currentDuration -= Time.deltaTime;
+                if (currentDuration > 0)
+                {
+                    Vector3 shakePos = startPos + Random.insideUnitSphere * shakeStrength;
+                    cameraTransform.localPosition = new Vector3(shakePos.x, shakePos.y, cameraTransform.localPosition.z);
+                    currentDuration -= Time.deltaTime;
+                }
+                else
+                {
+                    cameraTransform.localPosition = startPos;
+                    shaking = false;
+                    currentDuration = duration;
+                }
             }
-            else
+        } else
+        {
+            if (shaking)
             {
-                cameraTransform.localPosition = startPos;
-                shaking = false;
-                currentDuration = duration;
+                if (currentDuration > 0)
+                {
+                    Vector3 shakePos = startPos + Random.insideUnitSphere * shakeStrength;
+                    cameraTransform.localPosition = new Vector3(shakePos.x, shakePos.y, cameraTransform.localPosition.z);
+                    currentDuration -= Time.deltaTime;
+                }
+                else
+                {
+                    cameraTransform.localPosition = startPos;
+                    shaking = false;
+                    currentDuration = duration;
+                }
             }
         }
 	}

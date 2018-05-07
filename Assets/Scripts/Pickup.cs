@@ -33,11 +33,9 @@ public class Pickup : MonoBehaviour {
                 paddle.spearActive = paddle.spearPowerupDuration;
                 break;
             case PowerUp.Multi:
-                for (int i = 0; i < ballsInLevel.Length; i++)
-                {
-                    GameObject multiBall1 = Instantiate(multiBall, ballsInLevel[i].transform.position, ballsInLevel[i].transform.rotation);
-                    GameObject multiBall2 =  Instantiate(multiBall, ballsInLevel[i].transform.position, ballsInLevel[i].transform.rotation);
-                }
+                Ball ball = FindObjectOfType<Ball>();
+                GameObject multiBall1 = Instantiate(multiBall, ball.transform.position, ball.transform.rotation);
+                multiBall1.GetComponent<Rigidbody2D>().velocity = ball.GetComponent<Rigidbody2D>().velocity;
                 Debug.Log("Multi PowerUp attained!");
                 break;
             case PowerUp.Expand:
