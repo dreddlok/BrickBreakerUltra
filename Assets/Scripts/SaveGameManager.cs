@@ -38,7 +38,7 @@ public static class SaveGameManager {
             volume = 1;
             sfx = 1;
             screenShake = true;
-            return new bool[9];
+            return new bool[27];
         }
         
     }
