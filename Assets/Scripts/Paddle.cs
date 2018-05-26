@@ -32,11 +32,11 @@ public class Paddle : MonoBehaviour {
     public bool shrinkActivated = false;
     // confusion
     public float confusionActive = 0;
-    public float confusionPowerupDuration = 2.6f; // how long the shrink powerup will stay active for
+    public float confusionPowerupDuration = 2.6f; // how long the confusion powerup will stay active for
     public bool confusionActivated = false;
     // expand
     public float expandActive = 0;
-    public float expandPowerupDuration = 2.6f; // how long the shrink powerup will stay active for
+    public float expandPowerupDuration = 2.6f; // how long the expand powerup will stay active for
     public bool expandActivated = false;
     public float expandSpeed = 1.5f;
     public float expandAmount = 1.2f;
@@ -44,6 +44,7 @@ public class Paddle : MonoBehaviour {
     public Vector3 targetPositionR;
     private Transform expandPaddleL;
     private Transform expandPaddleR;
+
     private float sfxVol = 1;
     private TrailRenderer trailRenderer;
 
@@ -115,7 +116,7 @@ public class Paddle : MonoBehaviour {
             // dividing mouse x position by screen width gives x value as a percentage represented by 0-1. 16 is the number of world units in the scene's width
             mousePosInBlocks = ((Screen.width - Input.mousePosition.x) / Screen.width * 16);
             paddlePos.x = Mathf.Clamp(mousePosInBlocks, 1.0f, 15.0f);
-            this.transform.position = Vector3.Lerp(this.transform.position, paddlePos, .2f); ;
+            this.transform.position = Vector3.Lerp(this.transform.position, paddlePos, .2f);
         }
     }
 
@@ -127,7 +128,7 @@ public class Paddle : MonoBehaviour {
         this.transform.position = new Vector3(ballXPos, this.transform.position.y);
     }
 
-    private void ActivateSlingshot()
+    public void ActivateSlingshot()
     {
         if (slingshotAvailable == false)
         {
@@ -150,9 +151,7 @@ public class Paddle : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        ActivateSlingshot();
-        //TODO find a way to make less obnoxious
-        //AudioSource.PlayClipAtPoint(engineRoar, transform.position);    
+        ActivateSlingshot(); 
     }
 
     private void SpearPowerup()
@@ -204,8 +203,11 @@ public class Paddle : MonoBehaviour {
             if (shrinkActivated == false)
             {
                 GetComponent<SpriteRenderer>().enabled = false;
-                // GetComponent<PolygonCollider2D>().enabled = false;
-                transform.Find("Gear").GetComponent<SpriteRenderer>().enabled = false;
+                //GetComponent<PolygonCollider2D>().enabled = false;
+                transform.Find("Gear").gameObject.SetActive(false);
+                transform.Find("SmallPaddle").gameObject.SetActive(true);
+                expandPaddleL.gameObject.SetActive(false);
+                expandPaddleR.gameObject.SetActive(false);
                 shrinkActivated = true;
             }
         }
@@ -213,7 +215,10 @@ public class Paddle : MonoBehaviour {
         {
             GetComponent<SpriteRenderer>().enabled = true;
             GetComponent<PolygonCollider2D>().enabled = true;
-            transform.Find("Gear").GetComponent<SpriteRenderer>().enabled = true;
+            transform.Find("Gear").gameObject.SetActive(true);
+            transform.Find("SmallPaddle").gameObject.SetActive(false);
+            expandPaddleL.gameObject.SetActive(true);
+            expandPaddleR.gameObject.SetActive(true);
             shrinkActivated = false;
         }
     }
@@ -236,7 +241,6 @@ public class Paddle : MonoBehaviour {
         }
     }
 
-    //TODO look at making more performant
     private void ExpandPowerup()
     {
         if (expandActive > 0)

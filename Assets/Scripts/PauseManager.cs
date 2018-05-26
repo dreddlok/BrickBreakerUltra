@@ -5,6 +5,7 @@ using UnityEngine;
 public class PauseManager : MonoBehaviour {
 
     public bool bGameisPaused = false;
+    public GameObject helpScreen;
 	
     // Use this for initialization
 	void Start () {
@@ -50,6 +51,12 @@ public class PauseManager : MonoBehaviour {
             ballsInScene[i].Pause();
         }
 
+        MultiBall[] multiBallsInScene = FindObjectsOfType<MultiBall>();
+        for (int i = 0; i < multiBallsInScene.Length; i++)
+        {
+            multiBallsInScene[i].Pause();
+        }
+
         Pickup[] pickupsInScene = FindObjectsOfType<Pickup>();
         for (int i = 0; i < pickupsInScene.Length; i++)
         {
@@ -57,5 +64,19 @@ public class PauseManager : MonoBehaviour {
         }
 
         FindObjectOfType<Paddle>().Pause();
+    }
+
+    public void ShowHelp()
+    {
+        Instantiate(helpScreen);
+        Canvas[] canvas = FindObjectsOfType<Canvas>();
+        for (int i = 0; i < canvas.Length; i++)
+        {
+            if (canvas[i].tag == "Menu")
+            {
+                canvas[i].enabled = !canvas[i].enabled;
+            }
+        }
+
     }
 }

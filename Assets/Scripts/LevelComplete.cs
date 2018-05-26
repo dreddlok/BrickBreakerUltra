@@ -45,8 +45,9 @@ public class LevelComplete : MonoBehaviour {
         // TODO this casues a bug when a new level begins (the level starts in slow-mo )
         if (Input.GetMouseButton(0))
         {
-            easingIn = false;
-            iTween.FadeTo(gameObject, 0, 1);                        
+            //easingIn = false;
+            //iTween.FadeTo(gameObject, 0, 1);                        
+            speed = speed * 2;
         }
 
         currentCountdown -= Time.deltaTime * speed;

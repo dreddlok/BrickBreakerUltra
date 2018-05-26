@@ -14,6 +14,7 @@ public class Ball : MonoBehaviour {
     public float slowMotionSpeed = 0.2f;    
     public AudioClip bounceSFX;
     public AudioClip laucnhSFX;
+    public AudioClip slowSFX;
     public bool boosted = false;
     public float slowFactor = .8f;
     public bool slowed = false;
@@ -35,6 +36,7 @@ public class Ball : MonoBehaviour {
     private Vector3 initialCursorPosition;
     private float sfxVolume;
     private PlayerSave playerSave;
+    private int slingshotComboCount = 0;
 
     // Use this for initialization
     void Start () {
@@ -80,26 +82,28 @@ public class Ball : MonoBehaviour {
         }
         else
         {
-            Paddle paddle = FindObjectOfType<Paddle>();
-            if (paddle.slingshotAvailable || paddle.infinityActivated)
+            if (!bIsPaused)
             {
-                if (Input.GetMouseButtonDown(0))
+                Paddle paddle = FindObjectOfType<Paddle>();
+                if (paddle.slingshotAvailable || paddle.infinityActivated)
                 {
-                    SlowTime();
-                    initialCursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                }
-                if (Input.GetMouseButton(0))
-                {
-                    SlingShot();
-                }
-                if (Input.GetMouseButtonUp(0))
-                {
-                    RestoreTime();
-                    bSlingShotted = true;
-                    FindObjectOfType<Paddle>().DeactivateSlingshot();
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        SlowTime();
+                        initialCursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    }
+                    if (Input.GetMouseButton(0))
+                    {
+                        SlingShot();
+                    }
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        RestoreTime();
+                        bSlingShotted = true;
+                        FindObjectOfType<Paddle>().DeactivateSlingshot();
+                    }
                 }
             }
-
         }      
 	}
 
@@ -108,6 +112,9 @@ public class Ball : MonoBehaviour {
         Time.timeScale = slowMotionSpeed;
         Time.fixedDeltaTime = slowMotionSpeed * 0.02f;
         initialCursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        GetComponent<AudioSource>().clip = slowSFX;
+        GetComponent<AudioSource>().loop = true;
+        GetComponent<AudioSource>().Play();
     }
 
     private void LaunchBall()
@@ -126,6 +133,10 @@ public class Ball : MonoBehaviour {
         GetComponent<LineRenderer>().enabled = false;
         Time.timeScale = 1;
         Time.fixedDeltaTime = 0.02f;
+        if (GetComponent<AudioSource>().isPlaying)
+        {
+            GetComponent<AudioSource>().Stop();
+        }
     }
 
     public void Pause()
@@ -166,6 +177,16 @@ public class Ball : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+
+        if (slingshotComboCount < 16)
+        {
+            slingshotComboCount++;
+        }
+        else
+        {
+            slingshotComboCount = 0;
+            paddle.ActivateSlingshot();
+        }
 
         Vector2 tweak = new Vector2(Random.Range(0f,0.2f), Random.Range(0f, 0.2f));
         if (bHasStarted)

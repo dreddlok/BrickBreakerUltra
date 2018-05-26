@@ -19,6 +19,32 @@ public class Brick : MonoBehaviour {
     private BrickFlash brickFlash;
     private PlayerSave playerSave;
     private float sfxVol = 1;
+    public float delay;
+    public bool juiceAdded = false;
+
+    private void Awake()
+    {
+        delay = UnityEngine.Random.Range(0.0f, 1f); //(level * .1f) +.3f;
+        Cursor.visible = true;
+    }
+
+    private void Update()
+    {
+        if (delay > 0)
+        {
+            delay -= Time.deltaTime * 1;
+        }
+        else if (!juiceAdded)
+        {
+            AddJuice();
+            juiceAdded = true;
+        }
+    }
+
+    private void AddJuice()
+    {
+        iTween.PunchPosition(this.gameObject, Vector3.up * 10, 2f);
+    }
 
     void Start()
     {

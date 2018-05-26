@@ -16,6 +16,8 @@ public class LastBlock : MonoBehaviour {
             originalCameraPosition = Camera.main.transform.position;
             Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
             Camera.main.orthographicSize = zoom;
+            Camera.main.GetComponent<BlinderEffect>().activated = true;
+            FindObjectOfType<LiveManager>().enabled = false;
             SlowTime();
         //}
     }
@@ -25,6 +27,8 @@ public class LastBlock : MonoBehaviour {
         RestoreTime();
         Camera.main.transform.position = originalCameraPosition;
         Camera.main.orthographicSize = 6;
+        Camera.main.GetComponent<BlinderEffect>().activated = false;
+        FindObjectOfType<LiveManager>().enabled = true;
     }
 
     private void OnDestroy()

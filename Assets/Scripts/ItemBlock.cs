@@ -60,6 +60,10 @@ public class ItemBlock : MonoBehaviour {
     {
         GameObject spawnedPickup = Instantiate(pickup, transform.position, transform.rotation);
         spawnedPickup.GetComponent<Pickup>().powerUp = powerUp;
+        if (spawnedPickup.GetComponent<Pickup>().powerUp == PowerUp.Shrink || spawnedPickup.GetComponent<Pickup>().powerUp == PowerUp.Slow || spawnedPickup.GetComponent<Pickup>().powerUp == PowerUp.Confusion)
+        {
+            spawnedPickup.GetComponent<SpriteRenderer>().color = Color.red;
+        }
         Destroy(gameObject);
     }
 }

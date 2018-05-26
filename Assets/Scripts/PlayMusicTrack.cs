@@ -9,6 +9,10 @@ public class PlayMusicTrack : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        FindObjectOfType<MusicPlayer>().ChangeTrack(track, loop);
+        MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
+        if (musicPlayer != null)
+        {
+            musicPlayer.ChangeTrack(track, loop);
+        }
 	}
 }

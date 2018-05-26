@@ -13,11 +13,13 @@ public class Pickup : MonoBehaviour {
     public GameObject multiBall;
     public float boostFactor = 1.5f;
     public float slowFactor = .5f;
+    public Color debuffColour;
 
     private void Start()
     {
         // find component in child and assign sprite;
         this.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = powerUpSprite[(int)powerUp];
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -85,9 +87,7 @@ public class Pickup : MonoBehaviour {
                 Debug.Log("Confusion PowerUp attained!");
                 break;
         }
-        Destroy(gameObject);
-
-        //TODO Remove temporary Player Save prefad from Level_01    
+        Destroy(gameObject); 
     }
 
     public void Pause()

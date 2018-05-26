@@ -11,6 +11,7 @@ public class LevelButton : MonoBehaviour {
     private Button button;
     public float delay;
     public bool juiceAdded = false;
+    public float punchAmount = 1f;
 
     private void Awake()
     {
@@ -20,7 +21,8 @@ public class LevelButton : MonoBehaviour {
 
     private void AddJuice()
     {
-        iTween.PunchPosition(this.gameObject, Vector3.up * 30, 2f);
+        Vector3 punchVector = new Vector3(punchAmount, punchAmount);
+        iTween.PunchScale(this.gameObject, Vector3.one * .5f, 2f);
     }
 
     private void Update()

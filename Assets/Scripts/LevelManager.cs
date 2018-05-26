@@ -75,24 +75,37 @@ public class LevelManager : MonoBehaviour {
     {
         if (Brick.numberOfBricksInScene <= 0)
         {
-            PlayerSave playerSave = FindObjectOfType<PlayerSave>();
-            int currentLevel = SceneManager.GetActiveScene().buildIndex -2; // -2 because of the start and level select scenes being first in the build order
-            if (currentLevel < 8)
-            {
-                if (playerSave !=null)
-                {
-                    playerSave.level[currentLevel + 1] = true;                     // unlocks next level
-                }
-            }
-            playerSave.Save();
-            FindObjectOfType<Ball>().Pause();
-            Instantiate(levelComplete);
+            LevelComplete();
         }
         if (Brick.numberOfBricksInScene == 1)
         {
             Debug.Log("1 brick left in Scene");
             FindObjectOfType<Brick>().transform.Find("LastHitTrigger").GetComponent<BoxCollider2D>().enabled = true;
         }
+    }
+
+    public void LevelComplete()
+    {
+        PlayerSave playerSave = FindObjectOfType<PlayerSave>();
+        int currentLevel = SceneManager.GetActiveScene().buildIndex - 2; // -2 because of the start and level select scenes being first in the build order
+        if (currentLevel < 26)
+        {
+            if (playerSave != null)
+            {
+                playerSave.level[currentLevel + 1] = true;                     // unlocks next level
+            }
+        }
+        playerSave.Save();
+        Ball[] ballsInScene = FindObjectsOfType<Ball>();
+        for (int i = 0; i < ballsInScene.Length; i++)
+        {
+            ballsInScene[i].Pause();
+        }
+        FindObjectOfType<BossHealth>().bIsPaused = true;
+        FindObjectOfType<BossPickupSpawner>().bIsPaused = true;
+        FindObjectOfType<Paddle>().Pause();
+        Camera.main.GetComponent<BlinderEffect>().activated = false;
+        Instantiate(levelComplete);
     }
 
     //wrapper for startgame function as it must be a ienumerator but these cannnot be accesed directly by buttons
