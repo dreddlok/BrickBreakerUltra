@@ -37,6 +37,11 @@ public class PauseManager : MonoBehaviour {
                 canvas[i].enabled = !canvas[i].enabled;
             }
         }
+        BossHealth boss = FindObjectOfType<BossHealth>();
+        if (boss)
+        {
+            boss.bIsPaused = !boss.bIsPaused;
+        }
 
         if (bGameisPaused)
         {

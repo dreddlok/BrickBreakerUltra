@@ -26,6 +26,7 @@ public class BossHealth : MonoBehaviour {
 
     private void Start()
     {
+        Brick.numberOfBricksInScene++;
         currentHealth = maxHealth;
         levelManager = FindObjectOfType<LevelManager>();
         bossFlash = transform.Find("BossFlash").GetComponent<BossFlash>();
@@ -66,7 +67,8 @@ public class BossHealth : MonoBehaviour {
 
     private void BossDead()
     {
-        levelManager.LevelComplete();
+        Brick.numberOfBricksInScene--;
+        levelManager.BrickDestroyed();
     }
 
     private void MoveLeftAndRight()

@@ -54,6 +54,7 @@ public class Paddle : MonoBehaviour {
     private void Start()
     {
         Cursor.visible = false;
+        FindObjectOfType<LevelManager>().isLevelCompleted = false;
         expandPaddleL = transform.Find("Paddle Wing R");
         expandPaddleR = transform.Find("Paddle Wing L");
         Vector3 targetPositionL = new Vector3(expandPaddleL.transform.localPosition.x, expandPaddleL.transform.localPosition.y, expandPaddleL.transform.localPosition.z);

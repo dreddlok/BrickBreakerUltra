@@ -47,7 +47,7 @@ public class BossPickupSpawner : MonoBehaviour {
                     spawnedPickup.GetComponent<Pickup>().powerUp = PowerUp.Slow;
                     break;
                 case 2:
-                    spawnedPickup.GetComponent<Pickup>().powerUp = PowerUp.Spear;
+                    spawnedPickup.GetComponent<Pickup>().powerUp = PowerUp.Confusion;
                     break;
             }
         }
