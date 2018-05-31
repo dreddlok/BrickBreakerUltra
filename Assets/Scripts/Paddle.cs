@@ -14,6 +14,7 @@ public class Paddle : MonoBehaviour {
     public AudioClip engineRoar;
     public GameObject gemActivatedPS;
     public AudioClip gemActivatedSFX;
+    public AudioClip Leveltrack;
 
     [Header("Power Ups")]
     [HideInInspector]
@@ -63,7 +64,7 @@ public class Paddle : MonoBehaviour {
         MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
         if (musicPlayer != null)
         {
-            musicPlayer.ChangeTrack(musicPlayer.level, true);
+           musicPlayer.ChangeTrack(Leveltrack, true);
         }
 
         PlayerSave playerSave = FindObjectOfType<PlayerSave>();

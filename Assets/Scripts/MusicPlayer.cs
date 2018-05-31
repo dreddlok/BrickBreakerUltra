@@ -16,6 +16,7 @@ public class MusicPlayer : MonoBehaviour {
     public AudioClip level;
     public AudioClip levelComplete;
     public AudioClip levelFailed;
+    public AudioClip Boss;
 
     private void Awake()
     {

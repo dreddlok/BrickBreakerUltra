@@ -19,7 +19,7 @@ public class MessageInterp : MonoBehaviour {
         MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
         if (musicPlayer != null)
         {
-            musicPlayer.ChangeTrack(musicPlayer.level, true);
+            //musicPlayer.ChangeTrack(musicPlayer.level, true);
         }
     }
 	
