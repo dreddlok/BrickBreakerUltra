@@ -17,6 +17,7 @@ public class PlayMusicTrack : MonoBehaviour {
             audioSource.Stop();
             audioSource.clip = track;
             audioSource.Play();
+            audioSource.loop = loop;
             Debug.Log("track changed by" + this.gameObject.name);
         }
         else
@@ -24,4 +25,23 @@ public class PlayMusicTrack : MonoBehaviour {
             Debug.Log("no music player found");
         }
 	}
+
+    public void PlayTrack( AudioClip track)
+    {
+        MusicPlayer musicPlayer = FindObjectOfType<MusicPlayer>();
+        if (musicPlayer !=null)
+        {
+            //musicPlayer.ChangeTrack(track, loop);
+            AudioSource audioSource = musicPlayer.GetComponent<AudioSource>();
+            audioSource.Stop();
+            audioSource.clip = track;
+            audioSource.Play();
+            audioSource.loop = loop;
+            Debug.Log("track changed by" + this.gameObject.name);
+        }
+        else
+        {
+            Debug.Log("no music player found");
+        }
+    }
 }

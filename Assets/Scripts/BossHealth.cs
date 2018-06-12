@@ -16,6 +16,14 @@ public class BossHealth : MonoBehaviour {
     public GameObject debris;
     public GameObject shockwave;
     public bool bIsPaused = false;
+    public GameObject hurtEyeR;
+    public GameObject hurtEyeL;
+    public bool ishurt;
+    public bool subBoss;
+    public float hurtCountDown;
+    public float hurtDuration;
+    public GameObject deadPS;
+    public bool bossIsAlive = true;
 
     private bool movingRight;
     private float spriteWidth;
@@ -40,35 +48,64 @@ public class BossHealth : MonoBehaviour {
 
     private void Update()
     {
-        if(!bIsPaused)
+        if(!bIsPaused && bossIsAlive)
         {
             MoveLeftAndRight();
+            if(hurtCountDown > 0 && ishurt)
+            {
+                hurtCountDown -= Time.deltaTime;
+            }
+            else
+            {
+                if (!subBoss)
+                {
+                    HideHurtEyes();
+                }
+                ishurt = false;
+            }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ball")
-        {
-            if (currentHealth > 0)
+        {            
+            
+            if (currentHealth >= damageAmount && ishurt == false )
             {
+                hurtCountDown = hurtDuration;
+                if (!subBoss)
+                {
+                    ShowHurtEyes();
+                }
                 currentHealth -= damageAmount;
                 healthSlider.value = currentHealth;
                 Instantiate(shockwave, transform.position, Quaternion.identity);
                 bossFlash.FlashSprite();
                 AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
             }
-            else
+            else if (ishurt == false)
             {
-                BossDead();
+                BossDead();                
             }
         }
     }
 
     private void BossDead()
     {
-        Brick.numberOfBricksInScene--;
-        levelManager.BrickDestroyed();
+        Brick.numberOfBricksInScene--;        
+        if (bossIsAlive)
+        {
+            levelManager.BrickDestroyed();
+            Instantiate(deadPS);
+            if (!subBoss)
+            {
+                ShowHurtEyes();
+            }
+            Debug.Log("boss is dead");
+        }
+
+        bossIsAlive = false;
     }
 
     private void MoveLeftAndRight()
@@ -91,5 +128,18 @@ public class BossHealth : MonoBehaviour {
         {
             transform.position += Vector3.left * speed * Time.deltaTime;
         }
+    }
+
+    private void ShowHurtEyes()
+    {
+        ishurt = true;
+        hurtEyeL.SetActive(true);
+        hurtEyeR.SetActive(true);
+    }
+
+    private void HideHurtEyes()
+    {
+        hurtEyeL.SetActive(false);
+        hurtEyeR.SetActive(false);
     }
 }

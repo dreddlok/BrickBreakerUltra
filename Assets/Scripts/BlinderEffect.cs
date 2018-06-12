@@ -12,7 +12,6 @@ public class BlinderEffect : MonoBehaviour {
     public Vector2 rectTargetBottom;
     public Vector2 rectCurrentTop;
     public Vector2 rectCurrentBottom;
-    Vector2 size;
 
     private void Start()
     {        
@@ -21,8 +20,6 @@ public class BlinderEffect : MonoBehaviour {
 
         rectCurrentTop = new Vector2(0, 0 - 100);
         rectCurrentBottom = new Vector2(0, 500 + 100);
-
-        size = new Vector2(800, 100);
     }
 
     private void Update()

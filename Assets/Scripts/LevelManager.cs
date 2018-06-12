@@ -81,7 +81,12 @@ public class LevelManager : MonoBehaviour {
         if (Brick.numberOfBricksInScene == 1)
         {
             Debug.Log("1 brick left in Scene");
-            FindObjectOfType<Brick>().transform.Find("LastHitTrigger").GetComponent<BoxCollider2D>().enabled = true;
+            //FindObjectOfType<Brick>().transform.Find("LastHitTrigger").GetComponent<BoxCollider2D>().enabled = true;
+            LastBlock lastBlock = FindObjectOfType<LastBlock>();
+            if (lastBlock)
+            {
+                lastBlock.gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
         }
     }
 
@@ -104,8 +109,12 @@ public class LevelManager : MonoBehaviour {
             {
                 ballsInScene[i].Pause();
             }
-            FindObjectOfType<BossHealth>().bIsPaused = true;
-            FindObjectOfType<BossPickupSpawner>().bIsPaused = true;
+            BossHealth bossHealth = FindObjectOfType<BossHealth>();
+            if (bossHealth != null)
+            {
+                bossHealth.bIsPaused = true;
+                FindObjectOfType<BossPickupSpawner>().bIsPaused = true;
+            }
             FindObjectOfType<Paddle>().Pause();
             Camera.main.GetComponent<BlinderEffect>().activated = false;
             Instantiate(levelComplete);

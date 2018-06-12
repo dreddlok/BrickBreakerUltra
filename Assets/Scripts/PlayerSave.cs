@@ -26,6 +26,8 @@ public class PlayerSave : MonoBehaviour {
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+
         Load();
 
         level[0] = true;

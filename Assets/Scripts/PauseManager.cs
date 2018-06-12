@@ -50,10 +50,13 @@ public class PauseManager : MonoBehaviour {
         {
             Cursor.visible = false;
         }
-        Ball[] ballsInScene = FindObjectsOfType<Ball>();
-        for (int i = 0; i < ballsInScene.Length; i++)
+        if (FindObjectOfType<LevelManager>().isLevelCompleted == false)
         {
-            ballsInScene[i].Pause();
+            Ball[] ballsInScene = FindObjectsOfType<Ball>();
+            for (int i = 0; i < ballsInScene.Length; i++)
+            {
+                ballsInScene[i].Pause();
+            }
         }
 
         MultiBall[] multiBallsInScene = FindObjectsOfType<MultiBall>();

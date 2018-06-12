@@ -50,6 +50,7 @@ public class pip : MonoBehaviour {
     public void SetVolumeToSelf()
     {
         FindObjectOfType<PlayerSave>().volume = pipValue;
+        FindObjectOfType<MusicPlayer>().GetComponent<AudioSource>().volume = FindObjectOfType<PlayerSave>().volume;
     }
 
     public void SetSFXToSelf()

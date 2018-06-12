@@ -45,6 +45,11 @@ public class Ball : MonoBehaviour {
         launchArrow.GetComponent<Renderer>().enabled = true;
         launchArrow.ball = this;
         this.transform.position = paddle.transform.position;
+        BossEyeAndBrowMovement eyebrows = FindObjectOfType<BossEyeAndBrowMovement>();
+        if (eyebrows)
+        {
+            eyebrows.target = this.gameObject;
+        }
         playerSave = FindObjectOfType<PlayerSave>();
         if (playerSave == null)
         {
@@ -53,6 +58,7 @@ public class Ball : MonoBehaviour {
         {
             sfxVolume = playerSave.sfx;
         }
+        GetComponent<AudioSource>().volume = FindObjectOfType<PlayerSave>().sfx;
     }
 
     // Update is called once per frame
@@ -100,6 +106,8 @@ public class Ball : MonoBehaviour {
                     {
                         RestoreTime();
                         bSlingShotted = true;
+                        transform.Find("Slingshot").gameObject.SetActive(true);
+                        AudioSource.PlayClipAtPoint(laucnhSFX, Vector3.zero, sfxVolume);
                         FindObjectOfType<Paddle>().DeactivateSlingshot();
                     }
                 }
@@ -205,11 +213,13 @@ public class Ball : MonoBehaviour {
             {
                 AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, sfxVolume);
                 bSlingShotted = false;
+                transform.Find("Slingshot").gameObject.SetActive(false);
             }
             else
             {
                 AudioSource.PlayClipAtPoint(bounceSFX, Vector3.zero, sfxVolume);
                 bSlingShotted = false;
+                transform.Find("Slingshot").gameObject.SetActive(false);
                 Instantiate(debris, transform.position, Quaternion.identity);
             }
             

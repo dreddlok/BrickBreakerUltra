@@ -18,7 +18,7 @@ public class BossPickupSpawner : MonoBehaviour {
 
     private void Update()
     {
-           if (!bIsPaused)
+           if (!bIsPaused && GetComponent<BossHealth>().bossIsAlive)
         {
             SpawnPickup();
         }

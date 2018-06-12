@@ -42,11 +42,9 @@ public class LevelComplete : MonoBehaviour {
             FindObjectOfType<BannerGrow>().endScale = new Vector3(1, 0, 1);
         }
 
-        // TODO this casues a bug when a new level begins (the level starts in slow-mo )
+        
         if (Input.GetMouseButton(0))
-        {
-            //easingIn = false;
-            //iTween.FadeTo(gameObject, 0, 1);                        
+        {                      
             speed = speed * 2;
         }
 

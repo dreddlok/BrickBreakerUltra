@@ -78,12 +78,14 @@ public class Brick : MonoBehaviour {
                     AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                    collision.gameObject.transform.Find("Slingshot").gameObject.SetActive(false);
                 }
             } else
             {
                 AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                collision.gameObject.transform.Find("Slingshot").gameObject.SetActive(false);
             }
         }
 
@@ -102,6 +104,7 @@ public class Brick : MonoBehaviour {
                     AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                     HandleHits();
                     collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                    collision.gameObject.transform.Find("Slingshot").gameObject.SetActive(false);
                 }
             }
             else
@@ -109,6 +112,7 @@ public class Brick : MonoBehaviour {
                 AudioSource.PlayClipAtPoint(collisionSFX, Vector3.zero, sfxVol);
                 HandleHits();
                 collision.gameObject.GetComponent<Ball>().bSlingShotted = false;
+                collision.gameObject.transform.Find("Slingshot").gameObject.SetActive(false);
             }
         }
     }
@@ -116,6 +120,7 @@ public class Brick : MonoBehaviour {
     void HandleHits()
     {       
         hitPoints -= 1;
+        Debug.Log(numberOfBricksInScene);
         if (hitPoints <= 0)
         {
             numberOfBricksInScene--;

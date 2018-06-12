@@ -169,6 +169,11 @@ public class Paddle : MonoBehaviour {
                     brickArray[i].GetComponent<BoxCollider2D>().isTrigger = true;
                 }
                 bricksChangedToTriggers = true;
+                Ball[] ballArray = FindObjectsOfType<Ball>();
+                for (int i = 0; i < ballArray.Length; i++)
+                {
+                    ballArray[i].transform.Find("Spear").gameObject.SetActive(true);
+                }
             }
         }
         else if (bricksChangedToTriggers == true)
@@ -177,6 +182,11 @@ public class Paddle : MonoBehaviour {
             for (int i = 0; i < brickArray.Length; i++)
             {
                 brickArray[i].GetComponent<BoxCollider2D>().isTrigger = false;
+            }
+            Ball[] ballArray = FindObjectsOfType<Ball>();
+            for (int i = 0; i < ballArray.Length; i++)
+            {
+                ballArray[i].transform.Find("Spear").gameObject.SetActive(false);
             }
             bricksChangedToTriggers = false;
         }

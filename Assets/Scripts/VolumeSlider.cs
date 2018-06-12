@@ -6,15 +6,18 @@ public class VolumeSlider : MonoBehaviour {
 
     public PlayerSave playerSave;
     public AudioClip audioClip;
+    public MusicPlayer musicPlayer;
 
     private void Start()
     {
-        playerSave = FindObjectOfType<PlayerSave>();   
+        playerSave = FindObjectOfType<PlayerSave>();
+        musicPlayer = FindObjectOfType<MusicPlayer>();
     }
 
     public void ChangeVolume(float amount)
     {
         FindObjectOfType<PlayerSave>().ChangeVolume(amount);
+        musicPlayer.GetComponent<AudioSource>().volume = FindObjectOfType<PlayerSave>().volume;
     }
 
     public void ChangeSFX(float amount)
